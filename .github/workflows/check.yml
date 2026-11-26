@@ -1,0 +1,12 @@
+name: Check
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          BODY: ${{ github.event.pull_request.body }}
+        run: |
+          if grep -q 'PASS' <<<"$BODY"; then echo ok; else echo "::error::no PASS"; exit 1; fi
